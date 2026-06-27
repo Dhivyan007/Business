@@ -2,13 +2,11 @@ package com.exportbusiness.backend.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "expenses")
-@Data
 public class Expense {
 
     @Id
@@ -28,10 +26,22 @@ public class Expense {
     @Column(nullable = false)
     private LocalDate date;
 
-    // Category: FUEL, MAINTENANCE, SALARY, RENT, UTILITIES, TRANSPORT, OTHER
     @NotBlank(message = "Category is required")
     @Column(nullable = false)
     private String category;
 
     private String notes;
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    public BigDecimal getAmount() { return amount; }
+    public void setAmount(BigDecimal amount) { this.amount = amount; }
+    public LocalDate getDate() { return date; }
+    public void setDate(LocalDate date) { this.date = date; }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
+    public String getNotes() { return notes; }
+    public void setNotes(String notes) { this.notes = notes; }
 }

@@ -2,13 +2,11 @@ package com.exportbusiness.backend.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "vehicle_logs")
-@Data
 public class VehicleLog {
 
     @Id
@@ -19,7 +17,6 @@ public class VehicleLog {
     @JoinColumn(name = "vehicle_id", nullable = false)
     private Vehicle vehicle;
 
-    // Type: FUEL, MAINTENANCE, INSURANCE, TAX, OTHER
     @NotBlank(message = "Log type is required")
     @Column(nullable = false)
     private String type;
@@ -33,12 +30,27 @@ public class VehicleLog {
     @Column(nullable = false)
     private LocalDate date;
 
-    // For fuel logs
     private BigDecimal litres;
     private Integer odometer;
-
-    // For maintenance logs
     private String maintenanceType;
-
     private String notes;
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public Vehicle getVehicle() { return vehicle; }
+    public void setVehicle(Vehicle vehicle) { this.vehicle = vehicle; }
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
+    public BigDecimal getAmount() { return amount; }
+    public void setAmount(BigDecimal amount) { this.amount = amount; }
+    public LocalDate getDate() { return date; }
+    public void setDate(LocalDate date) { this.date = date; }
+    public BigDecimal getLitres() { return litres; }
+    public void setLitres(BigDecimal litres) { this.litres = litres; }
+    public Integer getOdometer() { return odometer; }
+    public void setOdometer(Integer odometer) { this.odometer = odometer; }
+    public String getMaintenanceType() { return maintenanceType; }
+    public void setMaintenanceType(String maintenanceType) { this.maintenanceType = maintenanceType; }
+    public String getNotes() { return notes; }
+    public void setNotes(String notes) { this.notes = notes; }
 }

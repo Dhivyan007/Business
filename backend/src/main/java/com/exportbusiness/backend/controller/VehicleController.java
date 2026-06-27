@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/vehicles")
@@ -17,7 +18,6 @@ public class VehicleController {
     @Autowired
     private VehicleRepository vehicleRepository;
 
-    // GET all vehicles (paginated)
     @GetMapping
     public Page<Vehicle> getAll(
             @RequestParam(defaultValue = "0") int page,
@@ -25,7 +25,6 @@ public class VehicleController {
         return vehicleRepository.findAll(PageRequest.of(page, size, Sort.by("name").ascending()));
     }
 
-    // GET single vehicle
     @GetMapping("/{id}")
     public ResponseEntity<Vehicle> getById(@PathVariable Long id) {
         return vehicleRepository.findById(id)
@@ -33,25 +32,21 @@ public class VehicleController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // GET all active vehicles (for dropdowns)
     @GetMapping("/active")
     public List<Vehicle> getActive() {
         return vehicleRepository.findByStatus("ACTIVE");
     }
 
-    // GET by type
     @GetMapping("/by-type/{type}")
     public List<Vehicle> getByType(@PathVariable String type) {
         return vehicleRepository.findByType(type);
     }
 
-    // POST create vehicle
     @PostMapping
     public Vehicle create(@RequestBody @Valid Vehicle vehicle) {
         return vehicleRepository.save(vehicle);
     }
 
-    // PUT update vehicle
     @PutMapping("/{id}")
     public ResponseEntity<Vehicle> update(@PathVariable Long id, @RequestBody @Valid Vehicle vehicle) {
         if (!vehicleRepository.existsById(id)) {
@@ -61,16 +56,17 @@ public class VehicleController {
         return ResponseEntity.ok(vehicleRepository.save(vehicle));
     }
 
-    // PATCH update status only
     @PatchMapping("/{id}/status")
     public ResponseEntity<Vehicle> updateStatus(@PathVariable Long id, @RequestParam String status) {
-        return vehicleRepository.findById(id).map(vehicle -> {
-            vehicle.setStatus(status);
-            return ResponseEntity.ok(vehicleRepository.save(vehicle));
-        }).orElse(ResponseEntity.notFound().build());
+        Optional<Vehicle> vehicleOpt = vehicleRepository.findById(id);
+        if (vehicleOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Vehicle vehicle = vehicleOpt.get();
+        vehicle.setStatus(status);
+        return ResponseEntity.ok(vehicleRepository.save(vehicle));
     }
 
-    // DELETE vehicle
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         if (!vehicleRepository.existsById(id)) {

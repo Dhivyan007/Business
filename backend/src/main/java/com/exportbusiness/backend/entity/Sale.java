@@ -2,20 +2,17 @@ package com.exportbusiness.backend.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "sales")
-@Data
 public class Sale {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Link to product
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
@@ -31,12 +28,10 @@ public class Sale {
     @Column(nullable = false, precision = 15, scale = 3)
     private BigDecimal quantity;
 
-    // Price at time of sale (may differ from product's current sell price)
     @NotNull(message = "Unit price is required")
     @Column(name = "unit_price", nullable = false, precision = 15, scale = 2)
     private BigDecimal unitPrice;
 
-    // Auto-calculated: quantity * unitPrice
     @Column(name = "total_amount", nullable = false, precision = 15, scale = 2)
     private BigDecimal totalAmount;
 
@@ -44,13 +39,11 @@ public class Sale {
     @Column(name = "sale_date", nullable = false)
     private LocalDate saleDate;
 
-    // Status: PENDING, COMPLETED, CANCELLED
     @Column(nullable = false)
     private String status = "COMPLETED";
 
     private String notes;
 
-    // Auto-calculate total before saving
     @PrePersist
     @PreUpdate
     public void calculateTotal() {
@@ -58,4 +51,25 @@ public class Sale {
             this.totalAmount = quantity.multiply(unitPrice);
         }
     }
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public Product getProduct() { return product; }
+    public void setProduct(Product product) { this.product = product; }
+    public String getCustomerName() { return customerName; }
+    public void setCustomerName(String customerName) { this.customerName = customerName; }
+    public String getCustomerContact() { return customerContact; }
+    public void setCustomerContact(String customerContact) { this.customerContact = customerContact; }
+    public BigDecimal getQuantity() { return quantity; }
+    public void setQuantity(BigDecimal quantity) { this.quantity = quantity; }
+    public BigDecimal getUnitPrice() { return unitPrice; }
+    public void setUnitPrice(BigDecimal unitPrice) { this.unitPrice = unitPrice; }
+    public BigDecimal getTotalAmount() { return totalAmount; }
+    public void setTotalAmount(BigDecimal totalAmount) { this.totalAmount = totalAmount; }
+    public LocalDate getSaleDate() { return saleDate; }
+    public void setSaleDate(LocalDate saleDate) { this.saleDate = saleDate; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+    public String getNotes() { return notes; }
+    public void setNotes(String notes) { this.notes = notes; }
 }

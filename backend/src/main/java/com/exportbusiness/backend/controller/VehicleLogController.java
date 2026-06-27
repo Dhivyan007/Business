@@ -1,5 +1,6 @@
 package com.exportbusiness.backend.controller;
 
+import com.exportbusiness.backend.entity.Vehicle;
 import com.exportbusiness.backend.entity.VehicleLog;
 import com.exportbusiness.backend.repository.VehicleLogRepository;
 import com.exportbusiness.backend.repository.VehicleRepository;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/vehicle-logs")
@@ -23,7 +25,6 @@ public class VehicleLogController {
     @Autowired
     private VehicleRepository vehicleRepository;
 
-    // GET all logs (paginated)
     @GetMapping
     public Page<VehicleLog> getAll(
             @RequestParam(defaultValue = "0") int page,
@@ -31,13 +32,11 @@ public class VehicleLogController {
         return vehicleLogRepository.findAll(PageRequest.of(page, size, Sort.by("date").descending()));
     }
 
-    // GET logs for a specific vehicle
     @GetMapping("/by-vehicle/{vehicleId}")
     public List<VehicleLog> getByVehicle(@PathVariable Long vehicleId) {
         return vehicleLogRepository.findByVehicleIdOrderByDateDesc(vehicleId);
     }
 
-    // GET logs by type and date range (e.g. FUEL for last month)
     @GetMapping("/by-type")
     public List<VehicleLog> getByTypeAndDateRange(
             @RequestParam String type,
@@ -46,7 +45,6 @@ public class VehicleLogController {
         return vehicleLogRepository.findByTypeAndDateBetween(type, start, end);
     }
 
-    // GET single log
     @GetMapping("/{id}")
     public ResponseEntity<VehicleLog> getById(@PathVariable Long id) {
         return vehicleLogRepository.findById(id)
@@ -54,19 +52,20 @@ public class VehicleLogController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // POST create log
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody @Valid VehicleLog log) {
+    public ResponseEntity<String> create(@RequestBody @Valid VehicleLog log) {
         if (log.getVehicle() == null || log.getVehicle().getId() == null) {
             return ResponseEntity.badRequest().body("Vehicle is required");
         }
-        return vehicleRepository.findById(log.getVehicle().getId()).map(vehicle -> {
-            log.setVehicle(vehicle);
-            return ResponseEntity.ok(vehicleLogRepository.save(log));
-        }).orElse(ResponseEntity.badRequest().body("Vehicle not found"));
+        Optional<Vehicle> vehicleOpt = vehicleRepository.findById(log.getVehicle().getId());
+        if (vehicleOpt.isEmpty()) {
+            return ResponseEntity.badRequest().body("Vehicle not found");
+        }
+        log.setVehicle(vehicleOpt.get());
+        vehicleLogRepository.save(log);
+        return ResponseEntity.ok("Log saved successfully");
     }
 
-    // PUT update log
     @PutMapping("/{id}")
     public ResponseEntity<VehicleLog> update(@PathVariable Long id, @RequestBody @Valid VehicleLog log) {
         if (!vehicleLogRepository.existsById(id)) {
@@ -76,7 +75,6 @@ public class VehicleLogController {
         return ResponseEntity.ok(vehicleLogRepository.save(log));
     }
 
-    // DELETE log
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         if (!vehicleLogRepository.existsById(id)) {
