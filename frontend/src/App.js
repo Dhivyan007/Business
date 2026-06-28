@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -10,48 +10,77 @@ import Vehicles from './pages/Vehicles';
 import Reports from './pages/Reports';
 
 function App() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const navLinks = [
+    { to: '/', label: '🏠 Dashboard' },
+    { to: '/expenses', label: '💸 Expenses' },
+    { to: '/products', label: '📦 Products' },
+    { to: '/sales', label: '🧾 Sales' },
+    { to: '/vehicles', label: '🚛 Vehicles' },
+    { to: '/reports', label: '📊 Reports' },
+  ];
+
   return (
     <Router>
       <div className="d-flex flex-column min-vh-100">
         {/* Navbar */}
-        <nav className="navbar navbar-expand-lg navbar-dark bg-primary px-3">
+        <nav className="navbar navbar-dark bg-primary px-3">
           <span className="navbar-brand fw-bold">📦 Export Business Manager</span>
           <button
-            className="navbar-toggler"
+            className="navbar-toggler border-white"
             type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navMenu"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle navigation"
           >
             <span className="navbar-toggler-icon" />
           </button>
-          <div className="collapse navbar-collapse" id="navMenu">
-            <ul className="navbar-nav ms-auto gap-1">
-              {[
-                { to: '/', label: '🏠 Dashboard' },
-                { to: '/expenses', label: '💸 Expenses' },
-                { to: '/products', label: '📦 Products' },
-                { to: '/sales', label: '🧾 Sales' },
-                { to: '/vehicles', label: '🚛 Vehicles' },
-                { to: '/reports', label: '📊 Reports' },
-              ].map(({ to, label }) => (
-                <li className="nav-item" key={to}>
-                  <NavLink
-                    to={to}
-                    end={to === '/'}
-                    className={({ isActive }) =>
-                      `nav-link px-3 rounded ${isActive ? 'bg-white text-primary fw-bold' : 'text-white'}`
-                    }
-                  >
-                    {label}
-                  </NavLink>
-                </li>
+
+          {/* Mobile dropdown menu */}
+          {menuOpen && (
+            <div
+              className="w-100 mt-2"
+              style={{ borderTop: '1px solid rgba(255,255,255,0.3)' }}
+            >
+              {navLinks.map(({ to, label }) => (
+                <NavLink
+                  key={to}
+                  to={to}
+                  end={to === '/'}
+                  onClick={() => setMenuOpen(false)}
+                  className={({ isActive }) =>
+                    `d-block py-2 px-3 text-decoration-none fw-semibold ${isActive
+                      ? 'bg-white text-primary rounded'
+                      : 'text-white'
+                    }`
+                  }
+                >
+                  {label}
+                </NavLink>
               ))}
-            </ul>
-          </div>
+            </div>
+          )}
         </nav>
 
+        {/* Desktop horizontal nav (hidden on mobile) */}
+        <div className="bg-primary d-none d-lg-flex px-3 pb-2 gap-2">
+          {navLinks.map(({ to, label }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={to === '/'}
+              className={({ isActive }) =>
+                `nav-link px-3 py-1 rounded ${isActive ? 'bg-white text-primary fw-bold' : 'text-white'
+                }`
+              }
+            >
+              {label}
+            </NavLink>
+          ))}
+        </div>
+
         {/* Page content */}
-        <main className="flex-grow-1 bg-light p-4">
+        <main className="flex-grow-1 bg-light p-3">
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/expenses" element={<Expenses />} />
