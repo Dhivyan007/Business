@@ -60,22 +60,25 @@ export default function Sales() {
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h4 className="fw-bold mb-0">🧾 Sales Records</h4>
+        <h4 className="fw-bold mb-0 text-cyan">🧾 Sales Records</h4>
         <button className="btn btn-primary" onClick={() => { setForm(EMPTY); setShowModal(true); }}>+ New Sale</button>
       </div>
 
       {error && <div className="alert alert-danger alert-dismissible">{error}
         <button className="btn-close" onClick={() => setError('')} /></div>}
 
-      <div className="alert alert-info py-2 mb-3">
-        Total Revenue (this page): <strong>{formatCurrency(totalRevenue)}</strong>
+      <div className="card shadow-sm mb-3 border-primary py-2 px-3">
+        <div className="d-flex align-items-center justify-content-between">
+          <span className="text-muted small fw-bold" style={{ letterSpacing: '0.5px' }}>TOTAL REVENUE (PAGE)</span>
+          <span className="text-emerald fw-bold fs-5">{formatCurrency(totalRevenue)}</span>
+        </div>
       </div>
 
       {loading ? <div className="text-center py-5"><div className="spinner-border text-primary" /></div> : (
         <div className="card shadow-sm">
           <div className="table-responsive">
             <table className="table table-hover mb-0">
-              <thead className="table-light">
+              <thead>
                 <tr>
                   <th>Date</th><th>Customer</th><th>Product</th>
                   <th className="text-end">Qty</th>
@@ -94,7 +97,7 @@ export default function Sales() {
                       <td>{s.product?.name}</td>
                       <td className="text-end">{s.quantity} {s.product?.unit}</td>
                       <td className="text-end">{formatCurrency(s.unitPrice)}</td>
-                      <td className="text-end fw-bold text-success">{formatCurrency(s.totalAmount)}</td>
+                      <td className="text-end fw-bold text-emerald">{formatCurrency(s.totalAmount)}</td>
                       <td><span className={`badge bg-${s.status === 'COMPLETED' ? 'success' : s.status === 'PENDING' ? 'warning' : 'danger'}`}>{s.status}</span></td>
                       <td>
                         <button className="btn btn-sm btn-outline-danger" onClick={() => handleDelete(s.id)}>Delete</button>

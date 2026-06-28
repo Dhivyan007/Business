@@ -75,7 +75,7 @@ export default function Vehicles() {
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h4 className="fw-bold mb-0">🚛 Vehicles & Fuel</h4>
+        <h4 className="fw-bold mb-0 text-cyan">🚛 Vehicles & Fuel</h4>
         <div>
           {tab === 'vehicles'
             ? <button className="btn btn-primary" onClick={() => { setForm(EMPTY_VEHICLE); setEditId(null); setShowModal(true); }}>+ Add Vehicle</button>
@@ -96,17 +96,17 @@ export default function Vehicles() {
             ? <p className="text-muted">No vehicles found</p>
             : vehicles.map((v) => (
               <div className="col-md-4" key={v.id}>
-                <div className="card shadow-sm h-100">
+                <div className={`card border-${v.status === 'ACTIVE' ? 'success' : v.status === 'MAINTENANCE' ? 'warning' : 'secondary'} shadow-sm h-100`}>
                   <div className="card-body">
-                    <div className="d-flex justify-content-between">
-                      <h6 className="fw-bold">{v.name}</h6>
+                    <div className="d-flex justify-content-between mb-2">
+                      <h6 className="fw-bold mb-0 text-cyan">{v.name}</h6>
                       <span className={`badge bg-${v.status === 'ACTIVE' ? 'success' : v.status === 'MAINTENANCE' ? 'warning' : 'secondary'}`}>{v.status}</span>
                     </div>
                     <p className="text-muted small mb-1">Reg: {v.registrationNumber}</p>
                     <p className="text-muted small mb-1">Type: {v.type} | {v.model} {v.year}</p>
-                    {v.notes && <p className="text-muted small">{v.notes}</p>}
+                    {v.notes && <p className="text-muted small mt-2">{v.notes}</p>}
                   </div>
-                  <div className="card-footer d-flex gap-2">
+                  <div className="card-footer d-flex gap-2 bg-transparent border-0 pt-0 pb-3">
                     <button className="btn btn-sm btn-outline-primary" onClick={() => { setForm({ ...v, year: v.year?.toString() || '' }); setEditId(v.id); setShowModal(true); }}>Edit</button>
                     <button className="btn btn-sm btn-outline-danger" onClick={() => handleDeleteVehicle(v.id)}>Delete</button>
                   </div>
@@ -118,7 +118,7 @@ export default function Vehicles() {
         <div className="card shadow-sm">
           <div className="table-responsive">
             <table className="table table-hover mb-0">
-              <thead className="table-light">
+              <thead>
                 <tr><th>Date</th><th>Vehicle</th><th>Type</th><th className="text-end">Amount</th><th>Litres</th><th>KM</th><th>Notes</th><th>Actions</th></tr>
               </thead>
               <tbody>
@@ -129,7 +129,7 @@ export default function Vehicles() {
                       <td>{formatDate(l.date)}</td>
                       <td>{l.vehicle?.name}</td>
                       <td><span className="badge bg-secondary">{l.type}</span></td>
-                      <td className="text-end fw-bold">{formatCurrency(l.amount)}</td>
+                      <td className="text-end fw-bold text-pink">{formatCurrency(l.amount)}</td>
                       <td>{l.litres || '-'}</td>
                       <td>{l.odometer || '-'}</td>
                       <td className="small text-muted">{l.notes || '-'}</td>

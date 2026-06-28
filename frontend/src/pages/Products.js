@@ -57,7 +57,7 @@ export default function Products() {
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h4 className="fw-bold mb-0">📦 Products & Prices</h4>
+        <h4 className="fw-bold mb-0 text-cyan">📦 Products & Prices</h4>
         <button className="btn btn-primary" onClick={openCreate}>+ Add Product</button>
       </div>
 
@@ -68,7 +68,7 @@ export default function Products() {
         <div className="card shadow-sm">
           <div className="table-responsive">
             <table className="table table-hover mb-0">
-              <thead className="table-light">
+              <thead>
                 <tr>
                   <th>Name</th><th>Unit</th><th>Category</th>
                   <th className="text-end">Buy Price</th>
@@ -87,9 +87,9 @@ export default function Products() {
                       <td>{p.unit}</td>
                       <td>{p.category || '-'}</td>
                       <td className="text-end">{formatCurrency(p.buyPrice)}</td>
-                      <td className="text-end text-success fw-bold">{formatCurrency(p.sellPrice)}</td>
+                      <td className="text-end text-emerald fw-bold">{formatCurrency(p.sellPrice)}</td>
                       <td className="text-end">
-                        <span className="badge bg-info text-dark">{profit(p)}%</span>
+                        <span className="badge bg-info">{profit(p)}%</span>
                       </td>
                       <td className="text-end">
                         <span className={`badge ${p.stockQuantity < 10 ? 'bg-danger' : 'bg-success'}`}>

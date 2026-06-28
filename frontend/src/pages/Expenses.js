@@ -69,7 +69,7 @@ export default function Expenses() {
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h4 className="fw-bold mb-0">💸 Expenses</h4>
+        <h4 className="fw-bold mb-0 text-cyan">💸 Expenses</h4>
         <button className="btn btn-primary" onClick={openCreate}>+ Add Expense</button>
       </div>
 
@@ -83,7 +83,7 @@ export default function Expenses() {
         <div className="card shadow-sm">
           <div className="table-responsive">
             <table className="table table-hover mb-0">
-              <thead className="table-light">
+              <thead>
                 <tr>
                   <th>Date</th><th>Description</th><th>Category</th>
                   <th className="text-end">Amount</th><th>Notes</th><th>Actions</th>
@@ -97,7 +97,7 @@ export default function Expenses() {
                     <td>{formatDate(exp.date)}</td>
                     <td>{exp.description}</td>
                     <td><span className="badge bg-secondary">{exp.category}</span></td>
-                    <td className="text-end text-danger fw-bold">{formatCurrency(exp.amount)}</td>
+                    <td className="text-end text-pink fw-bold">{formatCurrency(exp.amount)}</td>
                     <td className="text-muted small">{exp.notes || '-'}</td>
                     <td>
                       <button className="btn btn-sm btn-outline-primary me-1" onClick={() => openEdit(exp)}>Edit</button>
