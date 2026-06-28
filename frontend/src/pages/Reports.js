@@ -28,11 +28,11 @@ export default function Reports() {
       label: 'Amount (₹)',
       data: [report.totalRevenue, report.totalExpenses, report.vehicleCosts, report.netProfit],
       backgroundColor: [
-        '#00ff87', '#ff007f', '#ff7b00',
-        report.netProfit >= 0 ? '#00f0ff' : '#ff007f',
+        '#10b981', '#f43f5e', '#f97316',
+        report.netProfit >= 0 ? '#0ea5e9' : '#f43f5e',
       ],
       borderWidth: 1,
-      borderColor: 'rgba(255,255,255,0.08)',
+      borderColor: '#ffffff',
       borderRadius: 4,
     }],
   } : null;
@@ -44,13 +44,13 @@ export default function Reports() {
     },
     scales: {
       x: {
-        grid: { color: 'rgba(255, 255, 255, 0.05)' },
-        ticks: { color: '#94a3b8', font: { family: 'Outfit' } },
+        grid: { color: 'rgba(0, 0, 0, 0.05)' },
+        ticks: { color: '#475569', font: { family: 'Outfit', weight: '500' } },
       },
       y: {
         beginAtZero: true,
-        grid: { color: 'rgba(255, 255, 255, 0.05)' },
-        ticks: { color: '#94a3b8', font: { family: 'Outfit' } },
+        grid: { color: 'rgba(0, 0, 0, 0.05)' },
+        ticks: { color: '#475569', font: { family: 'Outfit', weight: '500' } },
       },
     },
   };

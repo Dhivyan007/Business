@@ -33,8 +33,8 @@ export default function Dashboard() {
     datasets: [{
       label: 'Revenue (₹)',
       data: revenueByProduct.map((r) => r[1]),
-      backgroundColor: 'rgba(0, 240, 255, 0.85)',
-      borderColor: '#00f0ff',
+      backgroundColor: 'rgba(14, 165, 233, 0.85)',
+      borderColor: '#0ea5e9',
       borderWidth: 1,
       borderRadius: 4,
     }],
@@ -44,9 +44,9 @@ export default function Dashboard() {
     labels: expensesByCategory.map((e) => e[0]),
     datasets: [{
       data: expensesByCategory.map((e) => e[1]),
-      backgroundColor: ['#00f0ff', '#ff007f', '#ff7b00', '#00ff87', '#9d4edd', '#0d9488', '#475569'],
+      backgroundColor: ['#0ea5e9', '#f43f5e', '#f97316', '#10b981', '#8b5cf6', '#0d9488', '#64748b'],
       borderWidth: 1,
-      borderColor: 'rgba(255, 255, 255, 0.08)',
+      borderColor: '#ffffff',
     }],
   };
 
@@ -59,12 +59,12 @@ export default function Dashboard() {
     },
     scales: {
       x: {
-        grid: { color: 'rgba(255, 255, 255, 0.05)' },
-        ticks: { color: '#94a3b8', font: { family: 'Outfit' } },
+        grid: { color: 'rgba(0, 0, 0, 0.05)' },
+        ticks: { color: '#475569', font: { family: 'Outfit', weight: '500' } },
       },
       y: {
-        grid: { color: 'rgba(255, 255, 255, 0.05)' },
-        ticks: { color: '#94a3b8', font: { family: 'Outfit' } },
+        grid: { color: 'rgba(0, 0, 0, 0.05)' },
+        ticks: { color: '#475569', font: { family: 'Outfit', weight: '500' } },
       },
     },
   };
@@ -75,8 +75,8 @@ export default function Dashboard() {
       legend: {
         position: 'right',
         labels: {
-          color: '#94a3b8',
-          font: { family: 'Outfit', size: 11 },
+          color: '#475569',
+          font: { family: 'Outfit', size: 11, weight: '500' },
         },
       },
     },
